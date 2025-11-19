@@ -1,12 +1,33 @@
 /**
- * Song Class
+ * Creature Class
  * 
- * A class to manage songs with title, artist, play count, and rating.
+ * A superclass for magical creatures with name and habitat.
  */
 
-class Song {
+class Creature {
+  // write your code here
+}
+
+/**
+ * Dragon Class
+ * 
+ * A subclass of Creature that can breathe fire.
+ */
+
+class Dragon extends Creature {
+ //write your code here
+}
+
+/**
+ * Unicorn Class
+ * 
+ * A subclass of Creature that can heal with sparkles.
+ */
+
+class Unicorn extends Creature {
   //write your code here
 }
 
-// Export the Song class for testing
-module.exports = { Song };
+// Export the classes for testing
+module.exports = { Creature, Dragon, Unicorn };
+

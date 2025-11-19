@@ -1,8 +1,8 @@
 {
-  "name": "tip-song-class",
+  "name": "tip-creature-class",
   "version": "1.0.0",
   "private": true,
-  "description": "Song Class coding challenge with Jest tests",
+  "description": "Creature Class coding challenge with Jest tests",
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",

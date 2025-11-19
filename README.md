@@ -1,4 +1,4 @@
-# Code Challenge: Song Class
+# Code Challenge: Creature Class
 
 ## Instructions
 
@@ -12,136 +12,40 @@
 
 ## Problem (edit `index.js`)
 
-Create a `Song` class with the following specifications:
+### Part 1: Create a superclass called `Creature`
 
-### Instance Properties
+**Properties** (set in the constructor):
 
-- `title` (String, public, set by the constructor)
-- `artist` (String, public, set by the constructor)
-- `playCount` (Number, *private*, starting value of `0`)
-- `rating` (Number, *private*, starting value of `0`)
+- `name` (string) – the creature's name
+- `habitat` (string) – where the creature lives
 
-### Instance Methods
+**Methods**:
 
-- **Getter methods** for the `playCount` and `rating` private fields. Bonus points if you use the `get` syntax!
-- `play()` - increases `playCount` by `1`, then prints `"Now playing: {title} by {artist}"`.
-- `rate(stars)` - sets `rating` to `stars` (a number from 1-5), then prints `"You rated {title} {stars} stars"`.
-- `isPopular()` - returns `true` if `playCount` is `10` or more, `false` otherwise.
+- `describe()` – returns a string like: `"NAME lives in the HABITAT."`
+- `sleep()` – returns a string like: `"NAME falls asleep in the HABITAT. 😴"`
 
-### Static Properties
+### Part 2: Create a subclass called `Dragon` that extends `Creature`
 
-- `playlist` (array tracking all created Songs)
+**Additional property**:
 
-### Static Methods
+- `firePower` (number) – how strong the dragon's fire is
 
-- `getTotalSongs()` - returns count of all Songs created
-- `findByTitle(title)` - searches the `playlist` array and returns matching Song
+**Methods**:
 
----
+- `specialMove()` – returns a string like: `"NAME breathes fire with FIREPOWER intensity! 🔥"`
 
-## Usage Examples
+### Part 3: Create a subclass called `Unicorn` that extends `Creature`
 
-### Creating Songs
+**Additional property**:
 
-```javascript
-const song1 = new Song("Bohemian Rhapsody", "Queen");
-const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-const song3 = new Song("Hotel California", "Eagles");
+- `sparkleLevel` (number) – how magical the unicorn is
 
-// Access public properties
-console.log(song1.title);  // "Bohemian Rhapsody"
-console.log(song1.artist); // "Queen"
-```
+**Methods**:
 
-### Using Instance Methods
+- `specialMove()` – returns a string like: `"NAME heals allies with a sparkle level of SPARKLELEVEL! ✨"`
 
-```javascript
-// Play a song (increases playCount)
-song1.play();
-// Output: "Now playing: Bohemian Rhapsody by Queen"
+### Test your classes
 
-song1.play();
-song1.play();
-// Output: "Now playing: Bohemian Rhapsody by Queen" (each time)
-
-// Rate a song
-song1.rate(5);
-// Output: "You rated Bohemian Rhapsody 5 stars"
-
-song2.rate(4);
-// Output: "You rated Stairway to Heaven 4 stars"
-
-// Check if song is popular (10+ plays)
-console.log(song1.isPopular()); // false (only played 3 times)
-
-// Play more times to make it popular
-for (let i = 0; i < 7; i++) {
-  song1.play();
-}
-console.log(song1.isPopular()); // true (played 10+ times)
-```
-
-### Using Getter Methods
-
-```javascript
-// Access private fields through getters
-console.log(song1.playCount); // 10 (or current play count)
-console.log(song1.rating);    // 5
-
-// Note: Direct access to private fields should be undefined
-console.log(song1.#playCount); // SyntaxError or undefined (depending on implementation)
-```
-
-### Using Static Properties and Methods
-
-```javascript
-// Access the playlist (all created songs)
-console.log(Song.playlist);
-// [song1, song2, song3]
-
-// Get total number of songs
-console.log(Song.getTotalSongs()); // 3
-
-// Find a song by title
-const found = Song.findByTitle("Stairway to Heaven");
-console.log(found);           // song2 object
-console.log(found.artist);    // "Led Zeppelin"
-
-// Search for non-existent song
-const notFound = Song.findByTitle("Never Gonna Give You Up");
-console.log(notFound); // undefined
-```
-
-### Complete Example
-
-```javascript
-// Create some songs
-const song1 = new Song("Bohemian Rhapsody", "Queen");
-const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-
-// Play songs multiple times
-song1.play(); // "Now playing: Bohemian Rhapsody by Queen"
-song1.play();
-song2.play(); // "Now playing: Stairway to Heaven by Led Zeppelin"
-
-// Rate the songs
-song1.rate(5); // "You rated Bohemian Rhapsody 5 stars"
-song2.rate(4); // "You rated Stairway to Heaven 4 stars"
-
-// Check popularity
-console.log(song1.isPopular()); // false (only 2 plays)
-console.log(song2.isPopular()); // false (only 1 play)
-
-// Access play counts and ratings
-console.log(song1.playCount); // 2
-console.log(song1.rating);    // 5
-console.log(song2.playCount); // 1
-console.log(song2.rating);    // 4
-
-// Use static methods
-console.log(Song.getTotalSongs()); // 2
-console.log(Song.playlist.length); // 2
-
-const found = Song.findByTitle("Bohemian Rhapsody");
-console.log(found === song1); // true
-```
+1. Create one `Dragon` and one `Unicorn` object with unique values.
+2. Call all methods (`describe()`, `sleep()`, and `specialMove()`) on each object.
+3. Make sure outputs match the format above.

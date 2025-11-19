@@ -1,323 +1,189 @@
 /**
- * Test suite for the Song Class problem
+ * Test suite for the Creature Class problem
  *
- * Problem: Implement a Song class with instance properties, methods, static properties, and static methods.
+ * Problem: Implement a Creature superclass and Dragon/Unicorn subclasses with inheritance.
  */
 
-const { Song } = require('./index.js');
+const { Creature, Dragon, Unicorn } = require('./index.js');
 
-// Clear playlist before each test to ensure clean state
-beforeEach(() => {
-  Song.playlist = [];
+describe('Creature Class', () => {
+  describe('Constructor', () => {
+    test('should create a creature with name and habitat', () => {
+      const creature = new Creature('Fluffy', 'forest');
+      expect(creature.name).toBe('Fluffy');
+      expect(creature.habitat).toBe('forest');
+    });
+
+    test('should handle different name and habitat values', () => {
+      const creature = new Creature('Spike', 'mountain');
+      expect(creature.name).toBe('Spike');
+      expect(creature.habitat).toBe('mountain');
+    });
+  });
+
+  describe('describe Method', () => {
+    test('should return the correct description format', () => {
+      const creature = new Creature('Fluffy', 'forest');
+      expect(creature.describe()).toBe('Fluffy lives in the forest.');
+    });
+
+    test('should work with different names and habitats', () => {
+      const creature = new Creature('Spike', 'mountain');
+      expect(creature.describe()).toBe('Spike lives in the mountain.');
+    });
+  });
+
+  describe('sleep Method', () => {
+    test('should return the correct sleep message format', () => {
+      const creature = new Creature('Fluffy', 'forest');
+      expect(creature.sleep()).toBe('Fluffy falls asleep in the forest. 😴');
+    });
+
+    test('should work with different names and habitats', () => {
+      const creature = new Creature('Spike', 'mountain');
+      expect(creature.sleep()).toBe('Spike falls asleep in the mountain. 😴');
+    });
+  });
 });
 
-describe('Song Class', () => {
-  describe('Instance Properties', () => {
-    test('should have public title and artist properties', () => {
-      const song = new Song("Bohemian Rhapsody", "Queen");
-      expect(song.title).toBe("Bohemian Rhapsody");
-      expect(song.artist).toBe("Queen");
+describe('Dragon Class', () => {
+  describe('Constructor and Inheritance', () => {
+    test('should extend Creature class', () => {
+      const dragon = new Dragon('Smaug', 'mountain', 100);
+      expect(dragon instanceof Creature).toBe(true);
+      expect(dragon instanceof Dragon).toBe(true);
     });
 
-    test('should have private playCount and rating fields that are not directly accessible', () => {
-      const song = new Song("Test Song", "Test Artist");
-      // Private fields cannot be accessed directly - they must be accessed through getters
-      // Direct property access would be undefined (private fields are not enumerable)
-      expect(song.playCount).toBeDefined(); // Accessible through getter
-      expect(song.rating).toBeDefined(); // Accessible through getter
+    test('should have name, habitat, and firePower properties', () => {
+      const dragon = new Dragon('Smaug', 'mountain', 100);
+      expect(dragon.name).toBe('Smaug');
+      expect(dragon.habitat).toBe('mountain');
+      expect(dragon.firePower).toBe(100);
     });
 
-    test('should initialize playCount to 0 and rating to 0', () => {
-      const song = new Song("Test Song", "Test Artist");
-      expect(song.playCount).toBe(0);
-      expect(song.rating).toBe(0);
+    test('should handle different firePower values', () => {
+      const dragon = new Dragon('Draco', 'cave', 50);
+      expect(dragon.firePower).toBe(50);
     });
   });
 
-  describe('Getter Methods', () => {
-    test('playCount getter should return the play count', () => {
-      const song = new Song("Test Song", "Test Artist");
-      expect(song.playCount).toBe(0);
-      
-      song.play();
-      expect(song.playCount).toBe(1);
-      
-      song.play();
-      song.play();
-      expect(song.playCount).toBe(3);
+  describe('Inherited Methods', () => {
+    test('should inherit describe() method from Creature', () => {
+      const dragon = new Dragon('Smaug', 'mountain', 100);
+      expect(dragon.describe()).toBe('Smaug lives in the mountain.');
     });
 
-    test('rating getter should return the rating', () => {
-      const song = new Song("Test Song", "Test Artist");
-      expect(song.rating).toBe(0);
-      
-      song.rate(5);
-      expect(song.rating).toBe(5);
-      
-      song.rate(3);
-      expect(song.rating).toBe(3);
+    test('should inherit sleep() method from Creature', () => {
+      const dragon = new Dragon('Smaug', 'mountain', 100);
+      expect(dragon.sleep()).toBe('Smaug falls asleep in the mountain. 😴');
     });
   });
 
-  describe('play Method', () => {
-    test('should increase playCount by 1', () => {
-      const song = new Song("Bohemian Rhapsody", "Queen");
-      expect(song.playCount).toBe(0);
-      
-      song.play();
-      expect(song.playCount).toBe(1);
-      
-      song.play();
-      expect(song.playCount).toBe(2);
+  describe('specialMove Method', () => {
+    test('should return the correct special move format', () => {
+      const dragon = new Dragon('Smaug', 'mountain', 100);
+      expect(dragon.specialMove()).toBe('Smaug breathes fire with 100 intensity! 🔥');
     });
 
-    test('should log the correct message when play is called', () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const song = new Song("Bohemian Rhapsody", "Queen");
-      
-      song.play();
-      expect(consoleSpy).toHaveBeenCalledWith("Now playing: Bohemian Rhapsody by Queen");
-      
-      song.play();
-      expect(consoleSpy).toHaveBeenCalledWith("Now playing: Bohemian Rhapsody by Queen");
-      
-      consoleSpy.mockRestore();
+    test('should work with different names and firePower values', () => {
+      const dragon = new Dragon('Draco', 'cave', 75);
+      expect(dragon.specialMove()).toBe('Draco breathes fire with 75 intensity! 🔥');
+    });
+  });
+});
+
+describe('Unicorn Class', () => {
+  describe('Constructor and Inheritance', () => {
+    test('should extend Creature class', () => {
+      const unicorn = new Unicorn('Sparkle', 'forest', 50);
+      expect(unicorn instanceof Creature).toBe(true);
+      expect(unicorn instanceof Unicorn).toBe(true);
     });
 
-    test('should handle multiple play calls correctly', () => {
-      const song = new Song("Test Song", "Test Artist");
-      song.play();
-      song.play();
-      song.play();
-      expect(song.playCount).toBe(3);
+    test('should have name, habitat, and sparkleLevel properties', () => {
+      const unicorn = new Unicorn('Sparkle', 'forest', 50);
+      expect(unicorn.name).toBe('Sparkle');
+      expect(unicorn.habitat).toBe('forest');
+      expect(unicorn.sparkleLevel).toBe(50);
+    });
+
+    test('should handle different sparkleLevel values', () => {
+      const unicorn = new Unicorn('Rainbow', 'meadow', 80);
+      expect(unicorn.sparkleLevel).toBe(80);
     });
   });
 
-  describe('rate Method', () => {
-    test('should set rating to the given stars', () => {
-      const song = new Song("Test Song", "Test Artist");
-      expect(song.rating).toBe(0);
-      
-      song.rate(5);
-      expect(song.rating).toBe(5);
-      
-      song.rate(3);
-      expect(song.rating).toBe(3);
+  describe('Inherited Methods', () => {
+    test('should inherit describe() method from Creature', () => {
+      const unicorn = new Unicorn('Sparkle', 'forest', 50);
+      expect(unicorn.describe()).toBe('Sparkle lives in the forest.');
     });
 
-    test('should log the correct message when rate is called', () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const song = new Song("Bohemian Rhapsody", "Queen");
-      
-      song.rate(5);
-      expect(consoleSpy).toHaveBeenCalledWith("You rated Bohemian Rhapsody 5 stars");
-      
-      song.rate(4);
-      expect(consoleSpy).toHaveBeenCalledWith("You rated Bohemian Rhapsody 4 stars");
-      
-      consoleSpy.mockRestore();
-    });
-
-    test('should handle different rating values', () => {
-      const song = new Song("Test Song", "Test Artist");
-      song.rate(1);
-      expect(song.rating).toBe(1);
-      
-      song.rate(2);
-      expect(song.rating).toBe(2);
-      
-      song.rate(5);
-      expect(song.rating).toBe(5);
+    test('should inherit sleep() method from Creature', () => {
+      const unicorn = new Unicorn('Sparkle', 'forest', 50);
+      expect(unicorn.sleep()).toBe('Sparkle falls asleep in the forest. 😴');
     });
   });
 
-  describe('isPopular Method', () => {
-    test('should return false for a new song', () => {
-      const song = new Song("Test Song", "Test Artist");
-      expect(song.isPopular()).toBe(false);
+  describe('specialMove Method', () => {
+    test('should return the correct special move format', () => {
+      const unicorn = new Unicorn('Sparkle', 'forest', 50);
+      expect(unicorn.specialMove()).toBe('Sparkle heals allies with a sparkle level of 50! ✨');
     });
 
-    test('should return false when playCount is less than 10', () => {
-      const song = new Song("Test Song", "Test Artist");
-      
-      for (let i = 0; i < 9; i++) {
-        song.play();
-      }
-      
-      expect(song.playCount).toBe(9);
-      expect(song.isPopular()).toBe(false);
-    });
-
-    test('should return true when playCount is exactly 10', () => {
-      const song = new Song("Test Song", "Test Artist");
-      
-      for (let i = 0; i < 10; i++) {
-        song.play();
-      }
-      
-      expect(song.playCount).toBe(10);
-      expect(song.isPopular()).toBe(true);
-    });
-
-    test('should return true when playCount is greater than 10', () => {
-      const song = new Song("Test Song", "Test Artist");
-      
-      for (let i = 0; i < 15; i++) {
-        song.play();
-      }
-      
-      expect(song.playCount).toBe(15);
-      expect(song.isPopular()).toBe(true);
+    test('should work with different names and sparkleLevel values', () => {
+      const unicorn = new Unicorn('Rainbow', 'meadow', 80);
+      expect(unicorn.specialMove()).toBe('Rainbow heals allies with a sparkle level of 80! ✨');
     });
   });
+});
 
-  describe('Static Properties', () => {
-    test('playlist should track all created songs', () => {
-      const song1 = new Song("Bohemian Rhapsody", "Queen");
-      const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-      const song3 = new Song("Hotel California", "Eagles");
-      
-      expect(Song.playlist).toHaveLength(3);
-      expect(Song.playlist).toContain(song1);
-      expect(Song.playlist).toContain(song2);
-      expect(Song.playlist).toContain(song3);
-    });
+describe('Integration Tests', () => {
+  test('should work with examples from README', () => {
+    // Create one Dragon and one Unicorn object with unique values
+    const dragon = new Dragon('Smaug', 'mountain', 100);
+    const unicorn = new Unicorn('Sparkle', 'forest', 50);
 
-    test('playlist should be an array', () => {
-      expect(Array.isArray(Song.playlist)).toBe(true);
-    });
+    // Test Dragon methods
+    expect(dragon.describe()).toBe('Smaug lives in the mountain.');
+    expect(dragon.sleep()).toBe('Smaug falls asleep in the mountain. 😴');
+    expect(dragon.specialMove()).toBe('Smaug breathes fire with 100 intensity! 🔥');
+
+    // Test Unicorn methods
+    expect(unicorn.describe()).toBe('Sparkle lives in the forest.');
+    expect(unicorn.sleep()).toBe('Sparkle falls asleep in the forest. 😴');
+    expect(unicorn.specialMove()).toBe('Sparkle heals allies with a sparkle level of 50! ✨');
   });
 
-  describe('Static Methods', () => {
-    test('getTotalSongs should return the count of all created songs', () => {
-      expect(Song.getTotalSongs()).toBe(0);
-      
-      const song1 = new Song("Bohemian Rhapsody", "Queen");
-      expect(Song.getTotalSongs()).toBe(1);
-      
-      const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-      expect(Song.getTotalSongs()).toBe(2);
-      
-      const song3 = new Song("Hotel California", "Eagles");
-      expect(Song.getTotalSongs()).toBe(3);
-    });
+  test('should handle multiple creatures independently', () => {
+    const dragon1 = new Dragon('Draco', 'cave', 75);
+    const dragon2 = new Dragon('Flame', 'volcano', 150);
+    const unicorn1 = new Unicorn('Rainbow', 'meadow', 80);
+    const unicorn2 = new Unicorn('Stardust', 'garden', 60);
 
-    test('findByTitle should return the song with matching title', () => {
-      const song1 = new Song("Bohemian Rhapsody", "Queen");
-      const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-      const song3 = new Song("Hotel California", "Eagles");
-      
-      const found = Song.findByTitle("Stairway to Heaven");
-      expect(found).toBe(song2);
-      expect(found.title).toBe("Stairway to Heaven");
-      expect(found.artist).toBe("Led Zeppelin");
-    });
+    // Each creature should have its own properties
+    expect(dragon1.name).toBe('Draco');
+    expect(dragon2.name).toBe('Flame');
+    expect(unicorn1.name).toBe('Rainbow');
+    expect(unicorn2.name).toBe('Stardust');
 
-    test('findByTitle should return undefined if no song matches', () => {
-      new Song("Bohemian Rhapsody", "Queen");
-      new Song("Stairway to Heaven", "Led Zeppelin");
-      
-      const found = Song.findByTitle("Never Gonna Give You Up");
-      expect(found).toBeUndefined();
-    });
-
-    test('findByTitle should handle case sensitivity', () => {
-      const song = new Song("Bohemian Rhapsody", "Queen");
-      
-      expect(Song.findByTitle("Bohemian Rhapsody")).toBe(song);
-      expect(Song.findByTitle("bohemian rhapsody")).toBeUndefined();
-      expect(Song.findByTitle("BOHEMIAN RHAPSODY")).toBeUndefined();
-    });
+    // Each creature should have its own methods
+    expect(dragon1.specialMove()).toBe('Draco breathes fire with 75 intensity! 🔥');
+    expect(dragon2.specialMove()).toBe('Flame breathes fire with 150 intensity! 🔥');
+    expect(unicorn1.specialMove()).toBe('Rainbow heals allies with a sparkle level of 80! ✨');
+    expect(unicorn2.specialMove()).toBe('Stardust heals allies with a sparkle level of 60! ✨');
   });
 
-  describe('Integration Tests', () => {
-    test('should work with examples from README', () => {
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      
-      // Creating songs
-      const song1 = new Song("Bohemian Rhapsody", "Queen");
-      const song2 = new Song("Stairway to Heaven", "Led Zeppelin");
-      
-      expect(song1.title).toBe("Bohemian Rhapsody");
-      expect(song1.artist).toBe("Queen");
-      
-      // Private fields are accessed through getters, not directly
-      // Getter examples
-      expect(song1.playCount).toBe(0);
-      expect(song1.rating).toBe(0);
-      
-      // Play examples
-      song1.play();
-      expect(consoleSpy).toHaveBeenCalledWith("Now playing: Bohemian Rhapsody by Queen");
-      expect(song1.playCount).toBe(1);
-      
-      song1.play();
-      expect(song1.playCount).toBe(2);
-      
-      song2.play();
-      expect(consoleSpy).toHaveBeenCalledWith("Now playing: Stairway to Heaven by Led Zeppelin");
-      expect(song2.playCount).toBe(1);
-      
-      // Rate examples
-      song1.rate(5);
-      expect(consoleSpy).toHaveBeenCalledWith("You rated Bohemian Rhapsody 5 stars");
-      expect(song1.rating).toBe(5);
-      
-      song2.rate(4);
-      expect(consoleSpy).toHaveBeenCalledWith("You rated Stairway to Heaven 4 stars");
-      expect(song2.rating).toBe(4);
-      
-      // Check popularity
-      expect(song1.isPopular()).toBe(false);
-      expect(song2.isPopular()).toBe(false);
-      
-      // Static property examples
-      expect(Song.playlist).toHaveLength(2);
-      expect(Song.playlist).toContain(song1);
-      expect(Song.playlist).toContain(song2);
-      
-      // Static method examples
-      expect(Song.getTotalSongs()).toBe(2);
-      
-      const found = Song.findByTitle("Bohemian Rhapsody");
-      expect(found).toBe(song1);
-      expect(found.title).toBe("Bohemian Rhapsody");
-      
-      consoleSpy.mockRestore();
-    });
+  test('should verify inheritance chain', () => {
+    const dragon = new Dragon('TestDragon', 'test', 10);
+    const unicorn = new Unicorn('TestUnicorn', 'test', 10);
 
-    test('should handle multiple songs independently', () => {
-      const song1 = new Song("Song 1", "Artist 1");
-      const song2 = new Song("Song 2", "Artist 2");
-      
-      song1.play();
-      song1.play();
-      song2.play();
-      
-      expect(song1.playCount).toBe(2);
-      expect(song2.playCount).toBe(1);
-      
-      song1.rate(5);
-      song2.rate(3);
-      
-      expect(song1.rating).toBe(5);
-      expect(song2.rating).toBe(3);
-      
-      expect(song1.isPopular()).toBe(false);
-      expect(song2.isPopular()).toBe(false);
-    });
+    // Both should be instances of Creature
+    expect(dragon instanceof Creature).toBe(true);
+    expect(unicorn instanceof Creature).toBe(true);
 
-    test('should make a song popular after 10 plays', () => {
-      const song = new Song("Popular Song", "Popular Artist");
-      
-      for (let i = 0; i < 9; i++) {
-        song.play();
-      }
-      expect(song.isPopular()).toBe(false);
-      
-      song.play(); // 10th play
-      expect(song.isPopular()).toBe(true);
-      expect(song.playCount).toBe(10);
-    });
+    // But not instances of each other's class
+    expect(dragon instanceof Unicorn).toBe(false);
+    expect(unicorn instanceof Dragon).toBe(false);
   });
 });
